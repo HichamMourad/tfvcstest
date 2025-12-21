@@ -29,8 +29,8 @@ data "vault_generic_secret" "aws_creds" {
 # Provider configuration for AWS (credentials from Vault)
 provider "aws" {
   region     = var.aws_region
-  access_key = data.vault_generic_secret.aws_creds.data["access_key"]
-  secret_key = data.vault_generic_secret.aws_creds.data["secret_key"]
+  access_key = data.vault_generic_secret.aws_creds.data["data"]["access_key"]
+  secret_key = data.vault_generic_secret.aws_creds.data["data"]["secret_key"]
 }
 
 # Provider configuration for Vault using AppRole authentication
