@@ -93,8 +93,8 @@ resource "vault_generic_secret" "ssh_private_key" {
     private_key = tls_private_key.ssh_key.private_key_pem
     public_key  = tls_private_key.ssh_key.public_key_openssh
     key_name    = aws_key_pair.deployer.key_name
-    instance_id = aws_instance.rhel_server.id
-    public_ip   = aws_instance.rhel_server.public_ip
+    instance_id = aws_instance.rhel_server[count.index].id
+    public_ip   = aws_instance.rhel_server[count.index].public_ip
   })
 }
 
