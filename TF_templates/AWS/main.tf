@@ -56,7 +56,7 @@ provider "aap" {
 
 # Data source to retrieve AWS credentials from Vault
 data "vault_generic_secret" "aws_creds" {
-  path = "secret/aws_creds"
+  path = "secret/data/aws_creds"
 }
 
 # Generate TLS private key for SSH
