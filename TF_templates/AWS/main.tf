@@ -277,7 +277,6 @@ resource "aws_instance" "rhel_server" {
 
 # Launch existing AAP workflow job template after instances are ready
 resource "aap_workflow_job" "configure_server" {
-  count                    = var.instance_count
   workflow_job_template_id = var.aap_workflow_job_template_id
 
   # Wait for instances to be ready and SSH key stored
