@@ -34,6 +34,12 @@ variable "instance_type" {
   default     = "t2.medium"
 }
 
+variable "instance_count" {
+  description = "Number of EC2 instances to create"
+  type        = number
+  default     = 1
+}
+
 variable "allowed_ssh_cidr" {
   description = "CIDR blocks allowed to SSH to the instance"
   type        = list(string)

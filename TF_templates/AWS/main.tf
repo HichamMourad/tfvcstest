@@ -86,16 +86,16 @@ resource "random_id" "suffix" {
   byte_length = 4
 }
 
-# Store SSH private key in Vault at a fixed path
+# Store SSH private key and instance info in Vault
 resource "vault_generic_secret" "ssh_private_key" {
   path = "secret/${var.project_name}/ssh-keys/latest"
-  
+
   data_json = jsonencode({
-    private_key = tls_private_key.ssh_key.private_key_pem
-    public_key  = tls_private_key.ssh_key.public_key_openssh
-    key_name    = aws_key_pair.deployer.key_name
-    instance_id = aws_instance.rhel_server.id
-    public_ip   = aws_instance.rhel_server.public_ip
+    private_key  = tls_private_key.ssh_key.private_key_pem
+    public_key   = tls_private_key.ssh_key.public_key_openssh
+    key_name     = aws_key_pair.deployer.key_name
+    instance_ids = aws_instance.rhel_server[*].id
+    public_ips   = aws_instance.rhel_server[*].public_ip
   })
 }
 
@@ -238,43 +238,46 @@ resource "aws_security_group" "rhel_server" {
   }
 }
 
-# Create RHEL EC2 instance
+# Create RHEL EC2 instance(s)
 resource "aws_instance" "rhel_server" {
+  count                  = var.instance_count
   ami                    = data.aws_ami.rhel.id
   instance_type          = var.instance_type
   key_name               = aws_key_pair.deployer.key_name
   subnet_id              = aws_subnet.public.id
   vpc_security_group_ids = [aws_security_group.rhel_server.id]
-  
+
   root_block_device {
     volume_size           = 20
     volume_type           = "gp3"
     delete_on_termination = true
     encrypted             = true
   }
-  
+
   user_data = <<-EOF
               #!/bin/bash
-              echo "Server provisioned by Terraform" > /tmp/terraform-provisioned.txt
+              echo "Server ${count.index + 1} provisioned by Terraform" > /tmp/terraform-provisioned.txt
               EOF
-  
+
   tags = {
-    Name        = "${var.project_name}-rhel-server"
+    Name        = "${var.project_name}-rhel-server-${count.index + 1}"
     Environment = var.environment
     ManagedBy   = "Terraform"
     OS          = "RHEL"
+    Index       = count.index
   }
-  
+
   lifecycle {
     create_before_destroy = true
   }
 }
 
-# Launch existing AAP workflow job template after instance is ready
+# Launch existing AAP workflow job template after instances are ready
 resource "aap_workflow_job" "configure_server" {
+  count                    = var.instance_count
   workflow_job_template_id = var.aap_workflow_job_template_id
-  
-  # Wait for instance to be ready and SSH key stored
+
+  # Wait for instances to be ready and SSH key stored
   depends_on = [
     aws_instance.rhel_server,
     vault_generic_secret.ssh_private_key
