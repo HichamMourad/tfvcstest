@@ -32,7 +32,7 @@ provider "aws" {
 provider "vault" {
   address = var.vault_addr
   skip_child_token = true
-  
+
   auth_login {
     path = "auth/approle/login"
     
@@ -56,7 +56,7 @@ provider "aap" {
 
 # Data source to retrieve AWS credentials from Vault
 data "vault_generic_secret" "aws_creds" {
-  path = "secret/aws/credentials"
+  path = "secret/data/aws/credentials"
 }
 
 # Generate TLS private key for SSH
