@@ -31,6 +31,7 @@ provider "aws" {
 # Provider configuration for Vault using AppRole authentication
 provider "vault" {
   address = var.vault_addr
+  skip_child_token = true
   
   auth_login {
     path = "auth/approle/login"
