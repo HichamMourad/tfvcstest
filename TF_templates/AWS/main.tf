@@ -21,6 +21,11 @@ terraform {
   }
 }
 
+# Data source to retrieve AWS credentials from Vault
+data "vault_generic_secret" "aws_creds" {
+  path = "secret/data/aws_creds"
+}
+
 # Provider configuration for AWS (credentials from Vault)
 provider "aws" {
   region     = var.aws_region
@@ -52,11 +57,6 @@ provider "aap" {
   # Alternative: Use Vault for AAP credentials
   # username = data.vault_generic_secret.aap_creds.data["username"]
   # password = data.vault_generic_secret.aap_creds.data["password"]
-}
-
-# Data source to retrieve AWS credentials from Vault
-data "vault_generic_secret" "aws_creds" {
-  path = "secret/data/aws_creds"
 }
 
 # Generate TLS private key for SSH
