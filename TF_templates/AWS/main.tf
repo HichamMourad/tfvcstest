@@ -30,8 +30,12 @@ data "vault_generic_secret" "aws_creds" {
 # Provider configuration for AWS (credentials from Vault)
 provider "aws" {
   region     = var.aws_region
-#  access_key = var.aws_access_key
-#  secret_key = var.aws_secret_key
+
+  # Use secrets defined in Terraform Enterprise
+  # access_key = var.aws_access_key
+  # secret_key = var.aws_secret_key
+  
+  # Alternative: Use Vault to get the AWS credentials
   access_key = data.vault_generic_secret.aws_creds.data["access_key"]
   secret_key = data.vault_generic_secret.aws_creds.data["secret_key"]
 }
@@ -61,6 +65,7 @@ data "vault_generic_secret" "aap_creds" {
 provider "aap" {
   host     = var.aap_host
 
+  # Use secrets defined in Terraform Enterprise
   # username = var.aap_username
   # password = var.aap_password
   
