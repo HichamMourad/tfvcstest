@@ -24,7 +24,7 @@ terraform {
 # Data source to retrieve AWS credentials from Vault
 #
 data "vault_generic_secret" "aws_creds" {
-  path = "secret/aws_creds"
+  path = "secret/data/aws_creds"
 }
 
 # Provider configuration for AWS (credentials from Vault)
@@ -54,7 +54,7 @@ provider "vault" {
 # Data source to retrieve AAP credentials from Vault
 #
 data "vault_generic_secret" "aap_creds" {
-  path = "secret/aap_creds"
+  path = "secret/data/aap_creds"
 }
 
 # Provider configuration for Ansible Automation Platform

@@ -110,10 +110,6 @@ variable "aap_workflow_job_template" {
     name         = string
     organization = string
   })
-  default = {
-    name         = "WF - Launched by TFE"
-    organization = "Default"
-  }
 }
 
 variable "aap_inventory" {
@@ -122,8 +118,4 @@ variable "aap_inventory" {
     name         = string
     organization = string
   })
-  default = {
-    name         = "Terraform Inventory"
-    organization = "Default"
-  }
 }
