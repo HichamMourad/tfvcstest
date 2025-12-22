@@ -62,6 +62,7 @@ variable "allowed_ssh_cidr" {
 variable "vault_addr" {
   description = "HashiCorp Vault address"
   type        = string
+  default     = "https://vault"
   # Set via TF_VAR_vault_addr or in terraform.tfvars
 }
 
@@ -86,7 +87,7 @@ variable "aap_host" {
   description = "Ansible Automation Platform URL"
   type        = string
   # Example: https://aap.example.com
-  default     = "https://aap.example.com"
+  default     = "https://control"
 }
 
 variable "aap_username" {
