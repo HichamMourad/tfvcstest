@@ -4,17 +4,17 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
-variable "aws_access_key" {
-  description = "AWS Key ID"
-  type        = string
-  sensitive   = true
-}
+# variable "aws_access_key" {
+#   description = "AWS Key ID"
+#   type        = string
+#   sensitive   = true
+# }
 
-variable "aws_secret_key" {
-  description = "AWS Secret key"
-  type        = string
-  sensitive   = true
-}
+# variable "aws_secret_key" {
+#   description = "AWS Secret key"
+#   type        = string
+#   sensitive   = true
+# }
 
 variable "project_name" {
   description = "Project name used for resource naming"
@@ -68,6 +68,7 @@ variable "vault_addr" {
 variable "vault_role_id" {
   description = "Vault AppRole Role ID for Terraform"
   type        = string
+  default     = "approle"
   sensitive   = true
   # Set via TF_VAR_vault_role_id or in terraform.tfvars
 }
@@ -75,6 +76,7 @@ variable "vault_role_id" {
 variable "vault_secret_id" {
   description = "Vault AppRole Secret ID for Terraform"
   type        = string
+  default     = "approle"
   sensitive   = true
   # Set via TF_VAR_vault_secret_id or in terraform.tfvars
 }
@@ -84,18 +86,21 @@ variable "aap_host" {
   description = "Ansible Automation Platform URL"
   type        = string
   # Example: https://aap.example.com
+  default     = "https://aap.example.com"
 }
 
 variable "aap_username" {
   description = "AAP username"
   type        = string
   sensitive   = true
+  default     = "admin"
 }
 
 variable "aap_password" {
   description = "AAP password"
   type        = string
   sensitive   = true
+  default     = "password"
 }
 
 variable "aap_workflow_job_template" {
