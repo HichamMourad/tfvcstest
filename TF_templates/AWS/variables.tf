@@ -98,17 +98,26 @@ variable "aap_password" {
   sensitive   = true
 }
 
-variable "aap_workflow_job_template_id" {
-  description = "AAP Workflow Job Template ID to execute (already exists in AAP)"
-  type        = number
-  default     = 2
-  # This is the ID of your existing workflow job template in AAP
-  # Find it in the URL: https://aap.example.com/#/templates/workflow_job_template/2
+variable "aap_workflow_job_template" {
+  description = "Ansible Automation Platform workflow job template name (Already exists in AAP)"
+  type = object({
+    name         = string
+    organization = string
+  })
+  default = {
+    name         = "WF - Launched by TFE"
+    organization = "Default"
+  }
 }
 
-variable "aap_inventory_id" {
-  description = "AAP Inventory ID"
-  type        = number
-  # Get this from AAP UI or API
-  # Find it in the URL when viewing your inventory
+variable "aap_inventory" {
+  description = "The Terraform Inventory name in AAP. (Already exists in AAP)"
+  type = object({
+    name         = string
+    organization = string
+  })
+  default = {
+    name         = "Terraform Inventory"
+    organization = "Default"
+  }
 }

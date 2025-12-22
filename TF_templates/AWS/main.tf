@@ -23,17 +23,17 @@ terraform {
 
 # Data source to retrieve AWS credentials from Vault
 #
-#data "vault_generic_secret" "aws_creds" {
-#  path = "secret/data/aws_creds"
-#}
+data "vault_generic_secret" "aws_creds" {
+  path = "secret/aws_creds"
+}
 
 # Provider configuration for AWS (credentials from Vault)
 provider "aws" {
   region     = var.aws_region
-  access_key = var.aws_access_key
-  secret_key = var.aws_secret_key
-#  access_key = data.vault_generic_secret.aws_creds.data.access_key
-#  secret_key = data.vault_generic_secret.aws_creds.data.secret_key
+#  access_key = var.aws_access_key
+#  secret_key = var.aws_secret_key
+  access_key = data.vault_generic_secret.aws_creds.data.["access_key"]
+  secret_key = data.vault_generic_secret.aws_creds.data.["secret_key"]
 }
 
 # Provider configuration for Vault using AppRole authentication
@@ -54,12 +54,13 @@ provider "vault" {
 # Provider configuration for Ansible Automation Platform
 provider "aap" {
   host     = var.aap_host
-  username = var.aap_username
-  password = var.aap_password
+
+  # username = var.aap_username
+  # password = var.aap_password
   
-  # Alternative: Use Vault for AAP credentials
-  # username = data.vault_generic_secret.aap_creds.data["username"]
-  # password = data.vault_generic_secret.aap_creds.data["password"]
+  # Alternative: Use Vault to get the AAP credentials
+  username = data.vault_generic_secret.aap_creds.data["username"]
+  password = data.vault_generic_secret.aap_creds.data["password"]
 }
 
 # Generate TLS private key for SSH
@@ -275,11 +276,26 @@ resource "aws_instance" "rhel_server" {
   }
 }
 
+# ############### Trigger and AAP Workflow below ################# 
 # Launch existing AAP workflow job template after instances are ready
-resource "aap_workflow_job" "configure_server" {
-  workflow_job_template_id = var.aap_workflow_job_template_id
+#
+data "aap_inventory" "inventory" {
+  name              = "Terraform Inventory"
+  organization_name = "Default"
+}
 
-  # Wait for instances to be ready and SSH key stored
+data "aap_workflow_job_template" "workflow_job_template" {
+  name              = "WF - Launched by TFE"
+  organization_name = "Default"
+}
+
+# Launch the workflow_job_template
+resource "aap_workflow_job" "workflow_job" {
+  workflow_job_template_id = data.aap_workflow_job_template.workflow_job_template.id
+  inventory_id             = data.aap_inventory.inventory.id
+
+# Force creation of this resource to wait for the rhel_server resource to be created
+# Wait for instances to be ready and SSH key stored
   depends_on = [
     aws_instance.rhel_server,
     vault_generic_secret.ssh_private_key
