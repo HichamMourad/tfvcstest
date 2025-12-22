@@ -32,8 +32,8 @@ provider "aws" {
   region     = var.aws_region
 #  access_key = var.aws_access_key
 #  secret_key = var.aws_secret_key
-  access_key = data.vault_generic_secret.aws_creds.data.["access_key"]
-  secret_key = data.vault_generic_secret.aws_creds.data.["secret_key"]
+  access_key = data.vault_generic_secret.aws_creds.data["access_key"]
+  secret_key = data.vault_generic_secret.aws_creds.data["secret_key"]
 }
 
 # Provider configuration for Vault using AppRole authentication
@@ -49,6 +49,12 @@ provider "vault" {
       secret_id = var.vault_secret_id
     }
   }
+}
+
+# Data source to retrieve AAP credentials from Vault
+#
+data "vault_generic_secret" "aap_creds" {
+  path = "secret/aap_creds"
 }
 
 # Provider configuration for Ansible Automation Platform
