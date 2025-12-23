@@ -4,17 +4,17 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
-# variable "aws_access_key" {
-#   description = "AWS Key ID"
-#   type        = string
-#   sensitive   = true
-# }
+variable "aws_access_key" {
+  description = "AWS Key ID"
+  type        = string
+  sensitive   = true
+}
 
-# variable "aws_secret_key" {
-#   description = "AWS Secret key"
-#   type        = string
-#   sensitive   = true
-# }
+variable "aws_secret_key" {
+  description = "AWS Secret key"
+  type        = string
+  sensitive   = true
+}
 
 variable "project_name" {
   description = "Project name used for resource naming"

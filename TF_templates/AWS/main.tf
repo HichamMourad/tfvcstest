@@ -33,12 +33,12 @@ provider "aws" {
   region     = var.aws_region
 
   # Use secrets defined in Terraform Enterprise
-  # access_key = var.aws_access_key
-  # secret_key = var.aws_secret_key
+  access_key = var.aws_access_key
+  secret_key = var.aws_secret_key
   
   # Alternative: Use Vault to get the AWS credentials
-  access_key = data.vault_generic_secret.aws_creds.data.access_key
-  secret_key = data.vault_generic_secret.aws_creds.data.secret_key
+  # access_key = data.vault_generic_secret.aws_creds.data.access_key
+  # secret_key = data.vault_generic_secret.aws_creds.data.secret_key
 }
 
 # Provider configuration for Vault using AppRole authentication
@@ -69,12 +69,12 @@ data "vault_generic_secret" "aap_creds" {
 provider "aap" {
   host     = var.aap_host
   # Use secrets defined in Terraform Enterprise
-  # username = var.aap_username
-  # password = var.aap_password
+  username = var.aap_username
+  password = var.aap_password
   
   # Alternative: Use Vault to get the AAP credentials
-  username = data.vault_generic_secret.aap_creds.data.username
-  password = data.vault_generic_secret.aap_creds.data.password
+  # username = data.vault_generic_secret.aap_creds.data.username
+  # password = data.vault_generic_secret.aap_creds.data.password
 }
 
 # Generate TLS private key for SSH
