@@ -66,6 +66,12 @@ variable "vault_addr" {
   # Set via TF_VAR_vault_addr or in terraform.tfvars
 }
 
+variable "vault_token" {
+  description = "Vault authentication token"
+  type        = string
+  sensitive   = true
+}
+
 # variable "vault_role_id" {
 #   description = "Vault AppRole Role ID for Terraform"
 #   type        = string

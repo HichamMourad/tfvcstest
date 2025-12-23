@@ -42,9 +42,9 @@ provider "aws" {
 
 # Provider configuration for Vault using AppRole authentication
 provider "vault" {
-  address = var.vault_addr
-  # Reads VAULT_TOKEN from environment automatically
-  skip_child_token = true
+  address           = var.vault_addr
+  token             = var.vault_token
+  skip_child_token  = true
 
 # Alternative: Use AppRole authentication (commented out for now)
   # auth_login {
