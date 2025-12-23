@@ -68,7 +68,6 @@ data "vault_generic_secret" "aap_creds" {
 # Provider configuration for Ansible Automation Platform
 provider "aap" {
   host     = var.aap_host
-
   # Use secrets defined in Terraform Enterprise
   # username = var.aap_username
   # password = var.aap_password
