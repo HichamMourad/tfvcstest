@@ -25,7 +25,7 @@ terraform {
 #
 data "vault_generic_secret" "aws_creds" {
   path = "secret/data/aws/credentials"
-  namespace = "root"
+  namespace = "admin"
 }
 
 # Provider configuration for AWS (credentials from Vault)
@@ -62,7 +62,7 @@ provider "vault" {
 #
 data "vault_generic_secret" "aap_creds" {
   path = "secret/data/aap/credentials"
-  namespace = "root"
+  namespace = "admin"
 }
 
 # Provider configuration for Ansible Automation Platform
