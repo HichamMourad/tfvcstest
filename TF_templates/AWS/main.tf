@@ -43,16 +43,18 @@ provider "aws" {
 # Provider configuration for Vault using AppRole authentication
 provider "vault" {
   address = var.vault_addr
+  # Reads VAULT_TOKEN from environment automatically
   skip_child_token = true
 
-  auth_login {
-    path = "auth/approle/login"
+# Alternative: Use AppRole authentication (commented out for now)
+  # auth_login {
+  #   path = "auth/approle/login"
     
-    parameters = {
-      role_id   = var.vault_role_id
-      secret_id = var.vault_secret_id
-    }
-  }
+  #   parameters = {
+  #     role_id   = var.vault_role_id
+  #     secret_id = var.vault_secret_id
+  #   }
+  # }
 }
 
 # Data source to retrieve AAP credentials from Vault
