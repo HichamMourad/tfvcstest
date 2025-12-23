@@ -1,4 +1,4 @@
-instance_count = 1
+instance_count = 2
 #
 aap_workflow_job_template = {
   name = "WF - Launched by TFE"
